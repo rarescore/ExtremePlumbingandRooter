@@ -1,0 +1,38 @@
+{
+  "url": "http://127.0.0.1:8081/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Extreme Plumbing & Rooter | 24/7 Los Angeles Plumber",
+      "hasCanvas": false,
+      "bodyTextLen": 5867,
+      "bodyTextHash": "bda4cb4012fb0e7720c57e0c7de9d5a3ad0c2b0f30af6ea0c63eb3de566f5da1",
+      "bodyTextPrefix": "Skip to content SERVICES SERVICE AREAS ABOUT OUR TEAM FAQ ARTICL",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Extreme Plumbing & Rooter | 24/7 Los Angeles Plumber",
+      "hasCanvas": false,
+      "bodyTextLen": 5819,
+      "bodyTextHash": "6b7832abbd086d1c374107a30d15d07aa5a782d9bb5b29c013ab48dcc661c7f2",
+      "bodyTextPrefix": "Skip to content LOS ANGELES PLUMBING · 24/7 RESPONSE QUICK PLUMB",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-built.json",
+  "divergesFromBaseline": false,
+  "baselineReasons": []
+}
