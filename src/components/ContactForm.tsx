@@ -2,7 +2,8 @@
 
 import { useEffect, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
-import { EMAIL, PHONE_DISPLAY, PHONE_HREF } from "@/lib/site";
+import { emailLeadFromBrowser, sendLead } from "@/lib/leads";
+import { PHONE_DISPLAY, PHONE_HREF } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 type Fields = {
@@ -44,7 +45,7 @@ export function ContactForm({
     setForm((prev) => ({ ...prev, [key]: value }));
   }
 
-  function submit(event: FormEvent) {
+  async function submit(event: FormEvent) {
     event.preventDefault();
     if (form.website) {
       setStatus("success");
@@ -56,26 +57,31 @@ export function ContactForm({
       return;
     }
     setStatus("sending");
-    const body = [
-      `New message from ${form.name}`,
-      `Phone: ${form.phone}`,
-      `Details: ${form.details || "None provided"}`,
-    ].join("\n");
     try {
-      const saved = JSON.parse(localStorage.getItem("extreme-contacts") || "[]") as unknown[];
-      saved.unshift({ ...form, createdAt: new Date().toISOString() });
-      localStorage.setItem("extreme-contacts", JSON.stringify(saved.slice(0, 20)));
+      const saved = await sendLead({
+        data: {
+          kind: "service",
+          name: form.name,
+          phone: form.phone,
+          details: form.details,
+        },
+      });
+      if (!saved.emailed) {
+        const mailed = await emailLeadFromBrowser({
+          kind: "service",
+          name: form.name,
+          phone: form.phone,
+          details: form.details,
+        });
+        if (!mailed) throw new Error("mail");
+      }
+      setStatus("success");
+      setMessage("Your note is on its way to the shop. Call if you need someone there today.");
+      setForm(empty);
     } catch {
-      /* ignore quota */
+      setStatus("error");
+      setMessage("That didn’t send. Call us and we’ll take it from the phone.");
     }
-    const mobile = /Mobi|Android/i.test(navigator.userAgent);
-    const href = mobile
-      ? `sms:+18186317296?&body=${encodeURIComponent(body)}`
-      : `mailto:${EMAIL}?subject=${encodeURIComponent(`Service request from ${form.name}`)}&body=${encodeURIComponent(body)}`;
-    window.location.href = href;
-    setStatus("success");
-    setMessage("Your message is ready to send. Call us if you need someone there today.");
-    setForm(empty);
   }
 
   const field =
@@ -148,7 +154,7 @@ export function ContactForm({
         </label>
       </div>
       <Button type="submit" className="mt-5 w-full" disabled={status === "sending"}>
-        {status === "sending" ? "Opening message…" : submitLabel}
+        {status === "sending" ? "Sending…" : submitLabel}
       </Button>
       {status === "error" && (
         <p className="mt-3 text-sm text-brand" role="alert">

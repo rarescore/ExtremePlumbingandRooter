@@ -11,6 +11,8 @@ export const navLinks = [
   { label: "Service Areas", href: "/service-areas" },
   { label: "About", href: "/about" },
   { label: "Our Team", href: "/our-workers" },
+  { label: "Reviews", href: "/reviews" },
+  { label: "HOA Signup", href: "/property-managers" },
   { label: "FAQ", href: "/faq" },
   { label: "Articles", href: "/articles" },
 ] as const;
@@ -24,7 +26,7 @@ export const socialLinks = [
   {
     label: "Yelp Reviews",
     shortLabel: "Yelp",
-    href: "https://share.google/kjDdnV7t0HGusdu7z",
+    href: "https://www.yelp.com/biz/extreme-plumbing-and-rooter-van-nuys-4",
   },
   {
     label: "Instagram",
@@ -194,39 +196,135 @@ export const areas = [
   "Santa Clarita",
 ] as const;
 
-export const testimonials = [
+export const reviews = [
   {
+    name: "Gina G.",
+    source: "Google",
+    stars: 5,
+    when: "",
     quote:
       "Hakop recognized the situation right away and got to work. The job was done very clean and very fast. That kind of service is rare these days.",
-    name: "Gina G.",
-    source: "Customer review",
   },
   {
+    name: "Gayush G.",
+    source: "Google",
+    stars: 5,
+    when: "",
     quote:
       "He knew what was going on, was very professional, and finished the work quickly and cleanly. We were extremely happy with the service.",
-    name: "Gayush G.",
-    source: "Customer review",
   },
   {
+    name: "Tom M.",
+    source: "Google",
+    stars: 5,
+    when: "",
     quote:
       "They quickly diagnosed the problems and installed a new garbage disposal and toilet in just a few hours. I would highly recommend them.",
-    name: "Tom M.",
-    source: "Customer review",
   },
   {
-    quote: "They came out the same day and repaired the outdoor leak quickly. Great service from start to finish.",
     name: "Johnny K.",
-    source: "Google review",
+    source: "Google",
+    stars: 5,
+    when: "",
+    quote: "They came out the same day and repaired the outdoor leak quickly. Great service from start to finish.",
   },
   {
-    quote: "Hakob and Arman arrived quickly, stopped a kitchen flooding problem, and treated us with genuine kindness.",
     name: "Luz O.",
-    source: "Google review",
+    source: "Google",
+    stars: 5,
+    when: "",
+    quote: "Hakob and Arman arrived quickly, stopped a kitchen flooding problem, and treated us with genuine kindness.",
   },
   {
-    quote: "Larry was exceptionally kind and professional. I would gladly recommend working with him.",
     name: "Leo G.",
-    source: "Google review",
+    source: "Google",
+    stars: 5,
+    when: "",
+    quote: "Larry was exceptionally kind and professional. I would gladly recommend working with him.",
+  },
+  {
+    name: "David D.",
+    source: "Yelp",
+    stars: null,
+    when: "Jul 30, 2026",
+    quote:
+      "Great service. Showed up in a reasonable amount of time for my leaky toilet. Knowledgeable plumbers and their experience showed.",
+    href: "https://www.yelp.com/biz/extreme-plumbing-and-rooter-van-nuys-4?hrid=ntsIzVpUiRHpP36Id_8u4w",
+  },
+  {
+    name: "Bradley J.",
+    source: "Yelp",
+    stars: null,
+    when: "Jul 30, 2026",
+    quote:
+      "Great customer service from beginning to end. Alen was able to diagnose and fix our shower at a reasonable price and established trust. Will definitely call on him again.",
+    href: "https://www.yelp.com/biz/extreme-plumbing-and-rooter-van-nuys-4?hrid=RcO-jZiapqSR0skJeBeWbQ",
+  },
+  {
+    name: "Kazumi M.",
+    source: "Yelp",
+    stars: null,
+    when: "Jun 27, 2026",
+    quote:
+      "Alen came out yesterday did a fantastic job. He took the time to really explain what was going on, which I appreciated, and he went above and beyond with the work itself.",
+    href: "https://www.yelp.com/biz/extreme-plumbing-and-rooter-van-nuys-4?hrid=QXbC2ZdzOna7PrbTwWZW_A",
+  },
+  {
+    name: "Mike S.",
+    source: "Yelp",
+    stars: null,
+    when: "Aug 22, 2026",
+    quote:
+      "I called Extreme Plumbing for a backed up sewage system which had overflowed into our shower and master bathroom. Alen was our main contact, although the entire team worked hard to restore our…",
+    href: "https://www.yelp.com/biz/extreme-plumbing-and-rooter-van-nuys-4?hrid=SRNyi4M04CDv-LsqvAw_0Q",
+  },
+  {
+    name: "Steve S.",
+    source: "Yelp",
+    stars: null,
+    when: "Aug 19, 2025",
+    quote:
+      "I needed to get a sewer camera inspection done for one of my projects. The guys squeezed me in the same day and did an excellent job at a reasonable price. The communication was great all…",
+    href: "https://www.yelp.com/biz/extreme-plumbing-and-rooter-van-nuys-4?hrid=Ik2m455E4mUvfUoZ6KyfFA",
+  },
+  {
+    name: "Oleg R.",
+    source: "Angi",
+    stars: 5,
+    when: "May 2016",
+    quote:
+      "Everything went extremely well. The provider was punctual, honest, and sincere. If there were problems, he would tell us right away. Abe checked the previous plumber’s work and broke the price down so we knew what each part cost.",
+  },
+  {
+    name: "Leo D.",
+    source: "Angi",
+    stars: 5,
+    when: "December 2017",
+    quote:
+      "Every single employee at this company is great! They answer all of your questions without getting annoyed. They are on time and they finished before the deadline. I will 100% use them again.",
+  },
+  {
+    name: "Armen P.",
+    source: "Angi",
+    stars: 5,
+    when: "December 2017",
+    quote:
+      "Extreme Plumbing and Rooter not only met my expectations, they exceeded them. Very professional, honest, easy-going. Definitely a company I would rehire and recommend to friends and family.",
+  },
+  {
+    name: "Gevorg K.",
+    source: "Angi",
+    stars: 5,
+    when: "September 2017",
+    quote:
+      "At first we had hired another company. They didn’t fix the problem correctly, so I called Extreme Plumbing and Rooter. They really know their job. They’re great with their customers and great guys.",
+  },
+  {
+    name: "Avetis S.",
+    source: "Angi",
+    stars: 5,
+    when: "December 2017",
+    quote: "Great service. Great guy. Comes on time and he is honest.",
   },
 ] as const;
 

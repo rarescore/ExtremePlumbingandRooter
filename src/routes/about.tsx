@@ -1,10 +1,8 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { CtaBand } from "@/components/CtaBand";
-import { VideoBackground } from "@/components/VideoBackground";
 import { PageHero } from "@/components/layout/PageHero";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { canonical } from "@/lib/site";
-import { videos } from "@/lib/videos";
 
 export const Route = createFileRoute("/about")({
   component: AboutPage,
@@ -38,10 +36,9 @@ function AboutPage() {
           intro="More than 25 years of hands-on plumbing and construction experience, serving greater Los Angeles with care and clear communication."
         />
         <section className="py-16 md:py-24">
-          <div className="shell grid items-center gap-12 lg:grid-cols-2">
-            <div>
-              <p className="kicker">Company history</p>
-              <h2 className="display text-4xl text-navy md:text-5xl">Built by learning the work firsthand.</h2>
+          <div className="shell max-w-3xl">
+            <p className="kicker">Company history</p>
+            <h2 className="display text-4xl text-navy md:text-5xl">Built by learning the work firsthand.</h2>
               <p className="mt-5 text-muted">
                 Extreme Plumbing & Rooter was formed in 1997, when company founder Hakob was a teenager helping his
                 father with plumbing and construction projects after school and during vacations.
@@ -58,10 +55,6 @@ function AboutPage() {
               <Link to="/our-workers" className="text-link mt-6">
                 Meet our field team
               </Link>
-            </div>
-            <div className="relative aspect-[4/5] overflow-hidden rounded-lg">
-              <VideoBackground src={videos.emergency.src} poster={videos.emergency.poster} />
-            </div>
           </div>
         </section>
         <section className="bg-navy py-16 text-cream md:py-24">

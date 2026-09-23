@@ -1,12 +1,10 @@
 import { Link, createFileRoute, notFound } from "@tanstack/react-router";
 import { Check } from "lucide-react";
 import { CtaBand } from "@/components/CtaBand";
-import { VideoBackground } from "@/components/VideoBackground";
 import { PageHero } from "@/components/layout/PageHero";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { buttonVariants } from "@/components/ui/button";
 import { PHONE_DISPLAY, PHONE_HREF, canonical, getService, services } from "@/lib/site";
-import { videoForService } from "@/lib/videos";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/services/$slug")({
@@ -31,7 +29,6 @@ export const Route = createFileRoute("/services/$slug")({
 function ServiceDetail() {
   const { service } = Route.useLoaderData();
   const related = services.filter((item) => item.slug !== service.slug).slice(0, 3);
-  const clip = videoForService(service.slug);
   const extraImage = service.slug === "camera-inspection" ? "/media/camera-pipe.jpg" : undefined;
 
   return (
@@ -42,7 +39,14 @@ function ServiceDetail() {
           <div className="shell grid items-start gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
             <div className="grid gap-4">
               <div className="relative aspect-[16/10] overflow-hidden rounded-lg">
-                <VideoBackground src={clip.src} poster={service.image} />
+                <img
+                  src={service.image}
+                  alt={service.alt}
+                  width={1400}
+                  height={875}
+                  decoding="async"
+                  className="size-full object-cover"
+                />
               </div>
               {extraImage ? (
                 <img

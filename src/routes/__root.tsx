@@ -1,5 +1,6 @@
 import { HeadContent, Outlet, Scripts, createRootRoute } from "@tanstack/react-router";
 import { AuthProvider } from "@/lib/auth/provider";
+import { Analytics } from "@/components/Analytics";
 import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import { EMAIL, LICENSE_NUMBER, PHONE_HREF, SITE_URL, areas, socialLinks } from "@/lib/site";
 import appCss from "../styles.css?url";
@@ -73,6 +74,12 @@ function RootDocument() {
   return (
     <html lang="en" className="antialiased" suppressHydrationWarning>
       <head>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-3T17L2W33Z" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3T17L2W33Z');`,
+          }}
+        />
         <HeadContent />
       </head>
       <body className="bg-paper text-ink">
@@ -86,6 +93,7 @@ function RootDocument() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
         <AuthProvider>
+          <Analytics />
           <Outlet />
         </AuthProvider>
         <Scripts />

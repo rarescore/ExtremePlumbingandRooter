@@ -16,6 +16,8 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as OurWorkersRouteImport } from './routes/our-workers'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as PropertyManagersRouteImport } from './routes/property-managers'
+import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as ServiceAreasRouteImport } from './routes/service-areas'
 import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
 import { Route as ArticlesSlugRouteImport } from './routes/articles/$slug'
@@ -57,6 +59,16 @@ const OurWorkersRoute = OurWorkersRouteImport.update({
 const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
   id: '/privacy-policy',
   path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PropertyManagersRoute = PropertyManagersRouteImport.update({
+  id: '/property-managers',
+  path: '/property-managers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReviewsRoute = ReviewsRouteImport.update({
+  id: '/reviews',
+  path: '/reviews',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServiceAreasRoute = ServiceAreasRouteImport.update({
@@ -103,6 +115,8 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/our-workers': typeof OurWorkersRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/property-managers': typeof PropertyManagersRoute
+  '/reviews': typeof ReviewsRoute
   '/service-areas': typeof ServiceAreasRoute
   '/articles/$slug': typeof ArticlesSlugRoute
   '/service/$slug': typeof ServiceSlugRoute
@@ -119,6 +133,8 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/our-workers': typeof OurWorkersRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/property-managers': typeof PropertyManagersRoute
+  '/reviews': typeof ReviewsRoute
   '/service-areas': typeof ServiceAreasRoute
   '/articles/$slug': typeof ArticlesSlugRoute
   '/service/$slug': typeof ServiceSlugRoute
@@ -136,6 +152,8 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/our-workers': typeof OurWorkersRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/property-managers': typeof PropertyManagersRoute
+  '/reviews': typeof ReviewsRoute
   '/service-areas': typeof ServiceAreasRoute
   '/articles/$slug': typeof ArticlesSlugRoute
   '/service/$slug': typeof ServiceSlugRoute
@@ -154,6 +172,8 @@ export interface FileRouteTypes {
     | '/faq'
     | '/our-workers'
     | '/privacy-policy'
+    | '/property-managers'
+    | '/reviews'
     | '/service-areas'
     | '/articles/$slug'
     | '/service/$slug'
@@ -170,6 +190,8 @@ export interface FileRouteTypes {
     | '/faq'
     | '/our-workers'
     | '/privacy-policy'
+    | '/property-managers'
+    | '/reviews'
     | '/service-areas'
     | '/articles/$slug'
     | '/service/$slug'
@@ -186,6 +208,8 @@ export interface FileRouteTypes {
     | '/faq'
     | '/our-workers'
     | '/privacy-policy'
+    | '/property-managers'
+    | '/reviews'
     | '/service-areas'
     | '/articles/$slug'
     | '/service/$slug'
@@ -203,6 +227,8 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   OurWorkersRoute: typeof OurWorkersRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
+  PropertyManagersRoute: typeof PropertyManagersRoute
+  ReviewsRoute: typeof ReviewsRoute
   ServiceAreasRoute: typeof ServiceAreasRoute
   ArticlesSlugRoute: typeof ArticlesSlugRoute
   ServiceSlugRoute: typeof ServiceSlugRoute
@@ -261,6 +287,20 @@ declare module '@tanstack/react-router' {
       path: '/privacy-policy'
       fullPath: '/privacy-policy'
       preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/property-managers': {
+      id: '/property-managers'
+      path: '/property-managers'
+      fullPath: '/property-managers'
+      preLoaderRoute: typeof PropertyManagersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reviews': {
+      id: '/reviews'
+      path: '/reviews'
+      fullPath: '/reviews'
+      preLoaderRoute: typeof ReviewsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/service-areas': {
@@ -323,6 +363,8 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   OurWorkersRoute: OurWorkersRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
+  PropertyManagersRoute: PropertyManagersRoute,
+  ReviewsRoute: ReviewsRoute,
   ServiceAreasRoute: ServiceAreasRoute,
   ArticlesSlugRoute: ArticlesSlugRoute,
   ServiceSlugRoute: ServiceSlugRoute,

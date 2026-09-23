@@ -17,9 +17,9 @@ export function SiteShell({
       <SiteFooter />
       <a
         href={PHONE_HREF}
-        className="fixed right-3 bottom-3 z-30 rounded-md bg-brand px-5 py-3.5 text-center text-[0.78rem] font-bold tracking-[0.08em] text-cream uppercase shadow-card md:hidden"
+        className="fixed inset-x-0 bottom-0 z-30 bg-brand px-4 py-3.5 text-center text-sm font-bold tracking-wide text-cream md:hidden"
       >
-        Call now · {PHONE_DISPLAY}
+        Call {PHONE_DISPLAY}
       </a>
     </div>
   );

@@ -1,11 +1,9 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { CtaBand } from "@/components/CtaBand";
-import { InViewVideo } from "@/components/VideoBackground";
 import { PageHero } from "@/components/layout/PageHero";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { buttonVariants } from "@/components/ui/button";
 import { canonical, services } from "@/lib/site";
-import { videoForService } from "@/lib/videos";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/services/")({
@@ -32,27 +30,30 @@ function ServicesPage() {
           title="Plumbing services built around the right diagnosis."
           intro="Tell us what is happening. We’ll inspect it, explain the options, and provide a free estimate before any work begins."
         />
-        <section className="py-16 md:py-24">
-          <div className="shell grid gap-16">
-            {services.map((service, index) => {
-              const clip = videoForService(service.slug);
-              return (
-                <article key={service.slug} id={service.slug} className="grid items-center gap-8 lg:grid-cols-2 lg:gap-14">
-                  <div className={cn("relative aspect-[4/3] overflow-hidden rounded-lg", index % 2 === 1 && "lg:order-2")}>
-                    <InViewVideo src={clip.src} poster={service.image} />
-                  </div>
+        <section>
+          <div className="shell">
+            {services.map((service) => (
+                <article key={service.slug} id={service.slug} className="grid items-start gap-6 border-t border-line py-10 last:border-b md:grid-cols-[16rem_1fr] md:gap-12">
+                  <img
+                    src={service.image}
+                    alt={service.alt}
+                    width={1400}
+                    height={1050}
+                    loading="lazy"
+                    decoding="async"
+                    className="aspect-[4/3] w-full object-cover"
+                  />
                   <div>
-                    <p className="kicker">0{index + 1} · Extreme Plumbing</p>
-                    <h2 className="display text-4xl text-navy md:text-5xl">{service.title}</h2>
-                    <p className="mt-4 text-muted">{service.description}</p>
-                    <ul className="mt-5 grid gap-2 sm:grid-cols-2">
+                    <h2 className="font-sans text-2xl font-semibold tracking-normal text-navy normal-case">{service.title}</h2>
+                    <p className="mt-3 max-w-2xl text-muted">{service.description}</p>
+                    <ul className="mt-4 grid gap-2 sm:grid-cols-2">
                       {service.highlights.map((item) => (
-                        <li key={item} className="relative pl-4 text-sm font-semibold text-navy before:absolute before:top-1.5 before:left-0 before:size-1.5 before:bg-brand">
+                        <li key={item} className="text-sm text-navy">
                           {item}
                         </li>
                       ))}
                     </ul>
-                    <div className="mt-6 flex flex-wrap items-center gap-4">
+                    <div className="mt-5 flex flex-wrap items-center gap-5">
                       <Link
                         to="/services/$slug"
                         params={{ slug: service.slug }}
@@ -66,8 +67,7 @@ function ServicesPage() {
                     </div>
                   </div>
                 </article>
-              );
-            })}
+              ))}
           </div>
         </section>
         <CtaBand kicker="Not sure which service you need?" title="That’s what the inspection is for." />
