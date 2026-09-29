@@ -38,17 +38,43 @@ export function HomeHero() {
   const [reduce, setReduce] = useState(false);
 
   useEffect(() => {
-    images.current = frames.map((src) => {
+    images.current = frames.map((src, i) => {
       const img = new Image();
       img.decoding = "async";
-      img.src = src;
+      if (i === 0) {
+        img.src = src;
+        img.dataset.ready = "1";
+      }
       return img;
     });
+
+    const loadRest = () => {
+      images.current.forEach((img, i) => {
+        if (!img.dataset.ready) {
+          img.src = frames[i];
+          img.dataset.ready = "1";
+        }
+      });
+    };
+
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
     const apply = () => setReduce(media.matches);
     apply();
     media.addEventListener("change", apply);
-    return () => media.removeEventListener("change", apply);
+
+    const node = trackRef.current;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) loadRest();
+      },
+      { rootMargin: "280px 0px" },
+    );
+    if (node) io.observe(node);
+
+    return () => {
+      media.removeEventListener("change", apply);
+      io.disconnect();
+    };
   }, []);
 
   useEffect(() => {
@@ -128,6 +154,7 @@ export function HomeHero() {
           width={900}
           height={506}
           fetchPriority="high"
+          decoding="async"
           className="absolute inset-0 size-full object-cover"
         />
         <canvas ref={canvasRef} className="absolute inset-0 size-full" />
