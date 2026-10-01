@@ -1,5 +1,5 @@
 import meta from "./articles-meta.json";
-import { coverFor } from "./article-covers";
+import { coverAltFor, coverFor } from "./article-covers";
 
 export type ArticleCard = {
   id: string;
@@ -8,11 +8,13 @@ export type ArticleCard = {
   publishedAt: string;
   excerpt: string;
   image: string;
+  imageAlt: string;
   metaTitle?: string;
   metaDescription?: string;
 };
 
-export const articleCards: ArticleCard[] = (meta as Omit<ArticleCard, "image">[]).map((item) => ({
+export const articleCards: ArticleCard[] = (meta as Omit<ArticleCard, "image" | "imageAlt">[]).map((item) => ({
   ...item,
   image: coverFor(item.slug, item.title),
+  imageAlt: coverAltFor(item.slug),
 }));

@@ -73,7 +73,7 @@ function ArticlePage() {
               </nav>
               <img
                 src={article.image}
-                alt=""
+                alt={article.imageAlt}
                 width={1400}
                 height={933}
                 className="mb-10 aspect-[16/9] w-full rounded-lg object-cover outline outline-1 -outline-offset-1 outline-ink/10"

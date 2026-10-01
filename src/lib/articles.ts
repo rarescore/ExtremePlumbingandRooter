@@ -1,5 +1,5 @@
 import articleData from "./articles.json";
-import { coverFor } from "./article-covers";
+import { coverAltFor, coverFor } from "./article-covers";
 
 export type Article = {
   id: string;
@@ -8,15 +8,17 @@ export type Article = {
   publishedAt: string;
   excerpt: string;
   image: string;
+  imageAlt: string;
   content: string;
   metaTitle?: string;
   metaDescription?: string;
   keyword?: string;
 };
 
-export const articles: Article[] = (articleData as Article[]).map((item) => ({
+export const articles: Article[] = (articleData as Omit<Article, "imageAlt">[]).map((item) => ({
   ...item,
   image: coverFor(item.slug, item.title),
+  imageAlt: coverAltFor(item.slug),
 }));
 
 export function getArticle(slug: string) {

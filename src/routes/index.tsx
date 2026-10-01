@@ -184,7 +184,7 @@ function Home() {
                   <Link to="/articles/$slug" params={{ slug: article.slug }} className="block">
                     <img
                       src={article.image}
-                      alt=""
+                      alt={article.imageAlt}
                       width={1400}
                       height={933}
                       loading="lazy"

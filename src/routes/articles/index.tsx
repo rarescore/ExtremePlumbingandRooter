@@ -39,7 +39,7 @@ function ArticlesPage() {
                 <Link to="/articles/$slug" params={{ slug: featured.slug }} className="block">
                   <img
                     src={featured.image}
-                    alt=""
+                    alt={featured.imageAlt}
                     width={1400}
                     height={933}
                     className="h-full min-h-64 w-full object-cover"
@@ -66,7 +66,7 @@ function ArticlesPage() {
               {rest.map((article) => (
                 <article key={article.slug} className="overflow-hidden rounded-lg bg-cream shadow-card">
                   <Link to="/articles/$slug" params={{ slug: article.slug }} className="block aspect-[3/2] overflow-hidden">
-                    <img src={article.image} alt="" width={1400} height={933} loading="lazy" className="size-full object-cover" />
+                    <img src={article.image} alt={article.imageAlt} width={1400} height={933} loading="lazy" className="size-full object-cover" />
                   </Link>
                   <div className="p-5">
                     <time className="text-xs font-semibold tracking-[0.12em] text-muted uppercase" dateTime={article.publishedAt}>
