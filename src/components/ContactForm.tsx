@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
-import { emailLeadFromBrowser, sendLead } from "@/lib/leads";
+import { deliverLead } from "@/lib/leads";
 import { PHONE_DISPLAY, PHONE_HREF } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -58,23 +58,13 @@ export function ContactForm({
     }
     setStatus("sending");
     try {
-      const saved = await sendLead({
-        data: {
-          kind: "service",
-          name: form.name,
-          phone: form.phone,
-          details: form.details,
-        },
+      const mailed = await deliverLead({
+        kind: "service",
+        name: form.name,
+        phone: form.phone,
+        details: form.details,
       });
-      if (!saved.emailed) {
-        const mailed = await emailLeadFromBrowser({
-          kind: "service",
-          name: form.name,
-          phone: form.phone,
-          details: form.details,
-        });
-        if (!mailed) throw new Error("mail");
-      }
+      if (!mailed) throw new Error("mail");
       setStatus("success");
       setMessage("Your note is on its way to the shop. Call if you need someone there today.");
       setForm(empty);

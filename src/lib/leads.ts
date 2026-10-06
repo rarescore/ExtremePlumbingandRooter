@@ -13,32 +13,55 @@ export type LeadInput = {
   website?: string;
 };
 
-export async function emailLeadFromBrowser(data: LeadInput) {
-  const subject =
-    data.kind === "hoa"
-      ? `HOA / property manager request from ${data.name}`
-      : data.kind === "estimate"
-        ? `Estimate request from ${data.name}`
-        : `Service request from ${data.name}`;
+// Free FormSubmit relay (no API key). Delivers to EMAIL once the address has
+// confirmed FormSubmit's one-time "Activate Form" email.
+const FORMSUBMIT_URL = `https://formsubmit.co/ajax/${encodeURIComponent(EMAIL)}`;
+const SITE_ORIGIN = "https://www.rooter-plumber.com";
+
+function subjectFor(data: LeadInput) {
+  return data.kind === "hoa"
+    ? `HOA / property manager request from ${data.name}`
+    : data.kind === "estimate"
+      ? `Estimate request from ${data.name}`
+      : `Service request from ${data.name}`;
+}
+
+function formSubmitBody(data: LeadInput) {
+  return JSON.stringify({
+    _subject: subjectFor(data),
+    _template: "table",
+    _captcha: "false",
+    _replyto: data.email || undefined,
+    name: data.name,
+    phone: data.phone,
+    email: data.email || "not provided",
+    company: data.company || "",
+    property: data.property || "",
+    details: [data.extra, data.details].filter(Boolean).join("\n\n") || "None provided",
+    form: data.kind,
+  });
+}
+
+/** FormSubmit answers HTTP 200 even when it did not deliver; trust only `success`. */
+async function readFormSubmit(response: Response) {
+  let body: { success?: unknown; message?: unknown } = {};
   try {
-    const response = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(EMAIL)}`, {
+    body = await response.json();
+  } catch {
+    // non-JSON (e.g. an HTML block page) means not delivered
+  }
+  const delivered = response.ok && (body.success === true || body.success === "true");
+  return { delivered, message: typeof body.message === "string" ? body.message : "" };
+}
+
+export async function emailLeadFromBrowser(data: LeadInput) {
+  try {
+    const response = await fetch(FORMSUBMIT_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({
-        _subject: subject,
-        _template: "table",
-        _captcha: "false",
-        _replyto: data.email || undefined,
-        name: data.name,
-        phone: data.phone,
-        email: data.email || "not provided",
-        company: data.company || "",
-        property: data.property || "",
-        details: [data.extra, data.details].filter(Boolean).join("\n\n") || "None provided",
-        form: data.kind,
-      }),
+      body: formSubmitBody(data),
     });
-    return response.ok;
+    return (await readFormSubmit(response)).delivered;
   } catch {
     return false;
   }
@@ -73,50 +96,43 @@ export const sendLead = createServerFn({ method: "POST" })
     };
   })
   .handler(async ({ data }) => {
-    if (data.website) return { ok: true as const };
+    if (data.website) return { ok: true as const, emailed: true as const };
 
-    const subject =
-      data.kind === "hoa"
-        ? `HOA / property manager request from ${data.name}`
-        : data.kind === "estimate"
-          ? `Estimate request from ${data.name}`
-          : `Service request from ${data.name}`;
-
-    const record = {
-      ...data,
-      website: undefined,
-      subject,
-      to: EMAIL,
-      createdAt: new Date().toISOString(),
-    };
-
-    const { appendFile, mkdir } = await import("node:fs/promises");
-    const path = await import("node:path");
-    const dir = path.join(process.cwd(), "data");
-    await mkdir(dir, { recursive: true });
-    await appendFile(path.join(dir, "leads.jsonl"), `${JSON.stringify(record)}\n`, "utf8");
-
-    const response = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(EMAIL)}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        _subject: subject,
-        _template: "table",
-        _captcha: "false",
-        _replyto: data.email || undefined,
-        name: data.name,
-        phone: data.phone,
-        email: data.email || "not provided",
-        company: data.company || "",
-        property: data.property || "",
-        details: [data.extra, data.details].filter(Boolean).join("\n\n") || "None provided",
-        form: data.kind,
-      }),
-    });
-
-    if (!response.ok) return { ok: true as const, emailed: false as const };
-    return { ok: true as const, emailed: true as const };
+    // No filesystem writes here: Vercel functions run on a read-only disk, and
+    // the old `data/leads.jsonl` append threw EROFS, failing every submission.
+    try {
+      const response = await fetch(FORMSUBMIT_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Origin: SITE_ORIGIN,
+          Referer: `${SITE_ORIGIN}/contact`,
+        },
+        body: formSubmitBody(data),
+      });
+      const result = await readFormSubmit(response);
+      if (!result.delivered) {
+        console.warn(`[leads] FormSubmit did not deliver (${response.status}): ${result.message}`);
+      }
+      return { ok: true as const, emailed: result.delivered };
+    } catch (error) {
+      console.warn("[leads] FormSubmit request failed", error);
+      return { ok: true as const, emailed: false };
+    }
   });
+
+/**
+ * Deliver a lead to the shop inbox: server relay first, then the visitor's
+ * browser straight to FormSubmit if the server path fails. Resolves true only
+ * when FormSubmit confirms delivery.
+ */
+export async function deliverLead(data: LeadInput): Promise<boolean> {
+  try {
+    const saved = await sendLead({ data });
+    if (saved.emailed) return true;
+  } catch {
+    // fall through to the browser relay
+  }
+  return emailLeadFromBrowser(data);
+}

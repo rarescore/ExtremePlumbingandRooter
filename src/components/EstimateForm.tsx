@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
-import { emailLeadFromBrowser, sendLead } from "@/lib/leads";
+import { deliverLead } from "@/lib/leads";
 import { PHONE_DISPLAY, PHONE_HREF } from "@/lib/site";
 
 type Fields = {
@@ -89,11 +89,8 @@ export function EstimateForm({ compact = false }: { compact?: boolean }) {
         extra: `Service: ${form.service || "Not selected"}\nPreferred visit: ${form.date} · ${form.time}`,
         details: form.details,
       };
-      const saved = await sendLead({ data: payload });
-      if (!saved.emailed) {
-        const mailed = await emailLeadFromBrowser(payload);
-        if (!mailed) throw new Error("mail");
-      }
+      const mailed = await deliverLead(payload);
+      if (!mailed) throw new Error("mail");
       setStatus("success");
       setMessage("Request sent to the shop. Call if you need us there today — no work begins without your approval.");
       setForm(empty);

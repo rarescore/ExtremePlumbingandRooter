@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
-import { emailLeadFromBrowser, sendLead } from "@/lib/leads";
+import { deliverLead } from "@/lib/leads";
 import { PHONE_DISPLAY, PHONE_HREF } from "@/lib/site";
 
 const field =
@@ -38,11 +38,8 @@ export function HoaForm() {
       details: String(form.get("details") || ""),
     };
     try {
-      const saved = await sendLead({ data: payload });
-      if (!saved.emailed) {
-        const mailed = await emailLeadFromBrowser(payload);
-        if (!mailed) throw new Error("mail");
-      }
+      const mailed = await deliverLead(payload);
+      if (!mailed) throw new Error("mail");
       setStatus("success");
     } catch {
       setStatus("error");
