@@ -82,6 +82,17 @@ export function SiteFooter() {
           </div>
         </div>
       </div>
+      <div className="border-t border-cream/10">
+        <div className="shell py-4 text-center text-xs tracking-wide text-cream/50">
+          Website by{" "}
+          <a
+            href="mailto:usscallisterllc@gmail.com?subject=Extreme%20Plumbing%20%26%20Rooter%20website"
+            className="font-semibold text-cream/80 underline underline-offset-2 hover:text-cream"
+          >
+            USSCALLISTER LLC
+          </a>
+        </div>
+      </div>
     </footer>
   );
 }
